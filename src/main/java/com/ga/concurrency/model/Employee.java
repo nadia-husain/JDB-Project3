@@ -15,6 +15,17 @@ public class Employee {
     private LocalDate joiningDate;
     private Role role;
     private double projectCompletion;
+    private double updatedSalary;
+
+    public Employee(int id, String name, double salary, LocalDate joiningDate, Role role, double projectCompletion, double updatedSalary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+        this.joiningDate = joiningDate;
+        this.role = role;
+        this.projectCompletion = projectCompletion;
+        this.updatedSalary = updatedSalary;
+    }
 
     public Employee(int id, String name, double salary, LocalDate joiningDate, Role role, double projectCompletion) {
         this.id = id;
