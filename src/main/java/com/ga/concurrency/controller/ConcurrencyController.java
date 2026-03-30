@@ -36,10 +36,11 @@ public class ConcurrencyController {
                         emp.getJoiningDate(),
                         emp.getRole(),
                         emp.getProjectCompletion(),
+                        emp.getRoleBonus(),
+                        emp.getYearBonus(),
                         emp.getUpdatedSalary())
                 )
                 .collect(Collectors.toList());
-
     }
 
 }
