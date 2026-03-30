@@ -15,11 +15,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 @Service
 public class ConcurrencyService {
     private final ReentrantLock salaryLock = new ReentrantLock();
+    // safely track processed employee count across threads
+    private final AtomicInteger processedCount = new AtomicInteger(0);
 
     public List<Employee> readEmployeesFromCSV(String filePath) {
         // CopyOnWriteArrayList is thread-safe for concurrent reads/writes
@@ -86,9 +89,12 @@ public class ConcurrencyService {
 
             emp.setUpdatedSalary(finalSalary);
 
+            int count = processedCount.incrementAndGet();
+
             System.out.println(Thread.currentThread().getName()
                     + " processed " + emp.getName()
-                    + " final salary = " + finalSalary);
+                    + " final salary = " + finalSalary
+                    + " | total processed = " + count);
         } finally {
             salaryLock.unlock();
         }
