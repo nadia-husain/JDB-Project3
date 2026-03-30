@@ -15,11 +15,9 @@ import java.util.List;
 public class ConcurrencyService {
 
     public List<Employee> readEmployeesFromCSV(String filePath) {
-
         List<Employee> employees = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -41,6 +39,28 @@ public class ConcurrencyService {
         }
 
         return employees;
+    }
+
+    private void incrementSalary(Employee emp) {
+        double bonus = 0;
+
+        if (emp.getProjectCompletion() > 0.6) {
+            if (emp.getRole() == Role.Manager) {
+                bonus = emp.getSalary() * 0.20;
+            } else if (emp.getRole() == Role.Director) {
+                bonus = emp.getSalary() * 0.5;
+            } else {
+                bonus = emp.getSalary() * 0.10;
+            }
+        }
+
+        double finalSalary = emp.getSalary() + bonus;
+
+        emp.setUpdatedSalary(finalSalary);
+
+        System.out.println(Thread.currentThread().getName()
+                + " processed " + emp.getName()
+                + " final salary = " + finalSalary);
     }
 
 }
