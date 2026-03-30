@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -21,7 +22,8 @@ public class ConcurrencyService {
     private final ReentrantLock salaryLock = new ReentrantLock();
 
     public List<Employee> readEmployeesFromCSV(String filePath) {
-        List<Employee> employees = new ArrayList<>();
+        // CopyOnWriteArrayList is thread-safe for concurrent reads/writes
+        List<Employee> employees = new CopyOnWriteArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
