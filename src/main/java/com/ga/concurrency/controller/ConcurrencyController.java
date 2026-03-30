@@ -1,8 +1,13 @@
 package com.ga.concurrency.controller;
 
+import com.ga.concurrency.model.Employee;
 import com.ga.concurrency.service.ConcurrencyService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/concurrency")
@@ -12,4 +17,13 @@ public class ConcurrencyController {
     public ConcurrencyController(ConcurrencyService concurrencyService) {
         this.concurrencyService = concurrencyService;
     }
+
+    @GetMapping("/increment")
+    public List<Employee> getProcessedSalaries() {
+
+        // Read employees
+        List<Employee> employees = concurrencyService.readEmployeesFromCSV("/Users/nadiahusain/jdb/projects/concurrency/src/main/resources/files/test_employees.csv");
+
+    }
+
 }
