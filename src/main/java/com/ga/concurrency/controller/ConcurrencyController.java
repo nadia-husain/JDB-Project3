@@ -22,7 +22,7 @@ public class ConcurrencyController {
     public List<Employee> getProcessedSalaries() {
 
         // read employees
-        List<Employee> employees = concurrencyService.readEmployeesFromCSV("/Users/nadiahusain/jdb/projects/concurrency/src/main/resources/files/test_employees.csv");
+        List<Employee> employees = concurrencyService.readEmployeesFromCSV("src/main/resources/files/test_employees.csv");
 
         // process employees
         concurrencyService.processEmployeesWithThreadPool(employees);
