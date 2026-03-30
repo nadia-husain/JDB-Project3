@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ConcurrencyService {
@@ -61,6 +64,47 @@ public class ConcurrencyService {
         System.out.println(Thread.currentThread().getName()
                 + " processed " + emp.getName()
                 + " final salary = " + finalSalary);
+    }
+
+    public void processEmployeesWithThreadPool(List<Employee> employees) {
+
+        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(4);
+
+        // Submit tasks for execution
+        for (int i = 0; i < employees.size(); i++) {
+
+            final int taskId = i + 1;
+            final Employee emp = employees.get(i);
+
+            fixedThreadPool.submit(() -> {
+
+                System.out.println("Task " + taskId +
+                        " executed by " + Thread.currentThread().getName() +
+                        " for Employee: " + emp.getName());
+
+                // Simulate processing time
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                incrementSalary(emp);
+
+                System.out.println("Task " + taskId +
+                        " finished for Employee: " + emp.getName() +
+                        " new salary = " + emp.getSalary());
+            });
+        }
+
+        fixedThreadPool.shutdown();
+
+        // Wait until all tasks finish
+        try {
+            fixedThreadPool.awaitTermination(1, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
